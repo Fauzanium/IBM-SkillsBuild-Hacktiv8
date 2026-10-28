@@ -1,0 +1,31 @@
+INVOICE
+
+Invoice Number : INV-2024-00123
+Date           : 2024-11-15
+Due Date       : 2024-12-15
+PO Number      : PO-20241101-007
+
+FROM (Vendor):
+PT. Maju Bersama Teknologi
+NPWP: 01.234.567.8-901.000
+Jl. Raya Sudirman No. 45, Jakarta Selatan 12190
+
+TO (Bill To):
+PT. Nusantara Digital Solusi
+NPWP: 98.765.432.1-002.000
+Kawasan Industri GIIC Blok AA/1, Cikarang Barat, Bekasi 17530
+
+─────────────────────────────────────────────────────────────────────────────
+ No  | Description                     | Qty | UOM | Unit Price  | Subtotal
+─────────────────────────────────────────────────────────────────────────────
+  1  | Software License — Enterprise   |   5 | Lic | 10.000.000  | 50.000.000
+  2  | Implementation Service          |  40 | Hr  |    500.000  | 20.000.000
+  3  | Annual Support & Maintenance    |   1 | Pkt |  5.000.000  |  5.000.000
+─────────────────────────────────────────────────────────────────────────────
+
+                                         Subtotal  :  75.000.000 IDR
+                                         PPN 11%   :   8.250.000 IDR
+                                         TOTAL     :  83.250.000 IDR
+
+Payment Terms : Net 30
+Notes         : Pembayaran melalui transfer bank ke Rek. BCA 1234567890 a/n PT. Maju Bersama Teknologi

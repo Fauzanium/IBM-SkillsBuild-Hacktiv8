@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task List</title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Tailwind config: extend palette with brand colors -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                blue:    "#1D4ED8",
+                blueLight: "#3B82F6",
+                blueDark:  "#1E3A8A",
+                orange:  "#F97316",
+                orangeLight: "#FB923C",
+              },
+            },
+            boxShadow: {
+              card: "0 4px 24px 0 rgba(30,58,138,0.08)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Custom styles (animations, scrollbar, etc.) -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50 flex items-start justify-center py-10 px-4">
+
+    <!-- ===== APP WRAPPER ===== -->
+    <main class="w-full max-w-lg">
+
+      <!-- ── Header ── -->
+      <header class="mb-8 text-center">
+        <div class="inline-flex items-center gap-2 mb-2">
+          <!-- Checklist icon (inline SVG) -->
+          <svg class="w-8 h-8 text-brand-blue" fill="none" stroke="currentColor" stroke-width="2.2"
+               viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12l2 2 4-4M7 4H4a1 1 0 00-1 1v14a1 1 0 001 1h16a1 1 0 001-1V5a1 1 0 00-1-1h-3" />
+          </svg>
+          <h1 class="text-3xl font-extrabold text-brand-blueDark tracking-tight">Task List</h1>
+        </div>
+        <p class="text-sm text-gray-400">Manage your tasks simply &amp; efficiently.</p>
+      </header>
+
+      <!-- ── Card container ── -->
+      <section class="bg-white rounded-2xl shadow-card px-6 py-6 space-y-6">
+
+        <!-- Add / Edit Task Form -->
+        <form id="task-form" aria-label="Task form" class="flex gap-2">
+          <label for="task-input" class="sr-only">Task description</label>
+          <input
+            id="task-input"
+            type="text"
+            placeholder="Add a new task…"
+            maxlength="120"
+            autocomplete="off"
+            class="flex-1 rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm
+                   text-gray-700 placeholder-gray-400 outline-none
+                   focus:border-brand-blueLight focus:ring-2 focus:ring-brand-blueLight/20
+                   transition duration-200"
+          />
+          <!-- Submit button: label changes between "Add" and "Update" via JS -->
+          <button
+            id="form-btn"
+            type="submit"
+            class="btn-primary flex items-center gap-1.5 rounded-xl bg-brand-blue px-4 py-2.5
+                   text-sm font-semibold text-white shadow-sm
+                   hover:bg-brand-blueLight active:scale-95 transition duration-200"
+          >
+            <!-- Plus icon -->
+            <svg id="btn-icon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5"
+                 viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            <span id="btn-label">Add</span>
+          </button>
+        </form>
+
+        <!-- Cancel edit button (hidden by default) -->
+        <div id="cancel-edit-wrapper" class="hidden -mt-4">
+          <button
+            id="cancel-edit-btn"
+            type="button"
+            class="text-xs text-gray-400 hover:text-brand-orange underline underline-offset-2 transition"
+          >
+            Cancel editing
+          </button>
+        </div>
+
+        <!-- ── Filter Tabs ── -->
+        <nav aria-label="Task filters" class="flex rounded-xl bg-gray-100 p-1 gap-1">
+          <button
+            data-filter="all"
+            class="filter-tab active-tab flex-1 rounded-lg py-2 text-xs font-semibold transition duration-200"
+          >All</button>
+          <button
+            data-filter="active"
+            class="filter-tab flex-1 rounded-lg py-2 text-xs font-semibold transition duration-200"
+          >Active</button>
+          <button
+            data-filter="completed"
+            class="filter-tab flex-1 rounded-lg py-2 text-xs font-semibold transition duration-200"
+          >Completed</button>
+        </nav>
+
+        <!-- ── Task List ── -->
+        <ul id="task-list" class="space-y-2 min-h-[60px]" aria-live="polite" aria-label="Task list">
+          <!-- Tasks injected by JS -->
+        </ul>
+
+        <!-- Empty state message (shown when no tasks match filter) -->
+        <p
+          id="empty-state"
+          class="hidden text-center text-sm text-gray-400 py-6 select-none"
+          aria-live="polite"
+        >
+          No tasks here yet. ✨
+        </p>
+
+        <!-- ── Footer: task counter + clear completed ── -->
+        <footer class="flex items-center justify-between pt-2 border-t border-gray-100">
+          <span id="task-counter" class="text-xs text-gray-400">0 tasks left</span>
+          <button
+            id="clear-completed-btn"
+            type="button"
+            class="text-xs text-gray-400 hover:text-brand-orange underline underline-offset-2 transition"
+          >
+            Clear completed
+          </button>
+        </footer>
+
+      </section><!-- end card -->
+    </main><!-- end main -->
+
+    <!-- ── Toast notification ── -->
+    <div
+      id="toast"
+      role="status"
+      aria-live="polite"
+      class="toast fixed bottom-6 left-1/2 -translate-x-1/2 bg-brand-blueDark text-white
+             text-xs font-medium px-5 py-2.5 rounded-full shadow-lg opacity-0 pointer-events-none
+             transition-all duration-300 select-none"
+    ></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
